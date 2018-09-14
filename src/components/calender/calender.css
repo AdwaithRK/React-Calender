@@ -1,0 +1,181 @@
+.scrollplease{
+    overflow-y:true; 
+}
+
+.current-day {
+    background-color: #4285f4;
+}
+
+.month-popup {
+    position: absolute;
+}
+
+.month-popup div {
+    padding: 0.3em;
+}
+
+.modal-header{
+    font-size: 1rem;
+}
+
+.nav-month {
+    position: absolute;
+}
+
+
+.label-month{
+    cursor: pointer;
+}
+
+body {
+    max-width: 100%;
+    max-height: 101%;
+    overflow-y:auto;
+ }
+
+
+  .td-calender{
+    cursor: pointer;
+ }
+
+ .change-cursor{
+    cursor: pointer;    
+ }
+
+
+ td {
+    
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 24px !important;
+     max-width: 85px !important;
+     max-height: 90px !important;
+    padding: 0;
+    height: 90px;
+    width:85px;
+    position: relative;
+ 
+ }
+
+
+
+ .text{
+     position: absolute;
+     top: 5px;
+     left: 5px;
+ }
+
+  .text-blue{
+    position: absolute;
+    top: 5px;
+    left: 5px;   
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    color: #fff;
+    background-color: #4285f4;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+  }
+
+  
+   .modal-common-button{
+    margin-left: 5px;
+    margin-right: 5px;
+   }
+   
+
+   .today{
+    color: #2a5daf;
+   }
+  
+
+    
+   .modal-text-box{
+    border-style: solid;
+    border-width: thin;
+   }
+
+
+  .button-del-modal{
+    float: right;
+    margin-right: 15px;
+    margin-top: 6px;
+    }
+
+    .cell{
+     margin-top: 2px;
+    }
+
+  .month-popup {
+   /* // position: absolute; */
+    padding: 5px;
+    background: white;
+    border: 2px solid skyblue;
+    z-index: 100;
+}
+
+
+.reminder-list {
+     /* max-width: 90px; */
+    display: inline-block;
+
+    width:100% !important;
+    overflow: hidden;
+    list-style: none;
+    font-size: 13px;
+    /* border-radius: 5px; */
+    background-color: green;
+    color: #fff;
+    margin: 12px 0 1px 0;
+
+    } 
+
+
+/* 
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        opacity: 1;
+    }
+    
+    .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+    
+        /* Position the tooltip */
+        /* position: relative;
+        z-index: 1;
+    }
+    
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    } */ 
+
+
+
+/* .current-day-round {
+    margin-top: 4px;
+    margin-left: -2px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+    background-color: #4285f4;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+} */
+
+
+
+
+.month-nav-left-bar{
+    margin-right: 30%;
+}
