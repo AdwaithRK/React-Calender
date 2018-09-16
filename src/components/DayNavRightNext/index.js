@@ -15,7 +15,7 @@ export default class DayNavRightNext extends React.Component{
 
                 <div>
 
-                <i className="prev fa fa-fw fa-chevron-right change-cursor" onClick={(e)=> {this.NextDay()}} >
+                <i className="prev fa fa-fw fa-chevron-right change-cursor" onClick={(e)=> {this.props.NextDay()}} data-toggle="tooltip" data-placement="bottom" title="Next Day">
                 </i>
 
                 </div>

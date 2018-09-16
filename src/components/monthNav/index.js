@@ -31,7 +31,7 @@ export default class MonthNav extends React.Component{
         let popup = props.data.map((data) => {
             return (
                 <div key={data}>
-                    <a href="#" onClick={(e)=> {this.onSelectChange(e, data)}}>
+                    <a href="#" onClick={(e)=> {this.onSelectChange(e, data)}} >
                         {data}
                     </a>
                 </div>
@@ -39,7 +39,7 @@ export default class MonthNav extends React.Component{
         });
 
         return (
-            <div className="month-popup">
+            <div className="month-popup" >
                 {popup}
             </div>
         );
@@ -54,7 +54,7 @@ export default class MonthNav extends React.Component{
         MonthNav = () => {
                 return (
                     <span className="label-month"
-                        onClick={(e)=> {this.onChangeMonth(e, this.month())}}>
+                        onClick={(e)=> {this.onChangeMonth(e, this.month())}} data-toggle="tooltip" data-placement="bottom" title="Go To This Month">
                         {this.month()}
                         {this.state.showMonthPopup &&
                         <this.SelectList data={this.months} />

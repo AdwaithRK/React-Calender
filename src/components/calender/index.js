@@ -11,6 +11,17 @@ import ButtonMonthNavLeft from '../../containers/ButtonMonthNavLeftPrev';
 import ButtonMonthNavRight from '../../containers/ButtonMonthNavRightNext'
 import ScrollArea from 'react-scrollbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import googleCalender from '../../images/googleCalender.png';
+
+
+const imgstyles ={
+    content:{
+        width: '40px',
+}
+
+}
+
+
 
 
 export default class Calendar extends React.Component {
@@ -57,15 +68,20 @@ export default class Calendar extends React.Component {
                          <td colSpan="2">                        
                               <ButtonMonthNavLeft />
                           </td>
+                          <td colSpan="1">                        
+                             <img  src={googleCalender} style={imgstyles.content}/>
+                          </td>
                           <td colSpan="3">
-                              <MonthNav />
+                              <MonthNav data-toggle="tooltip" data-placement="bottom" title="Go To This Month"/>
                           </td>
                           <td>
-                          <i className="fas fa-home change-cursor" onClick={()=>{this.props.updateDateContexts(moment())}}>Today</i>
+                          {/* <i className="fas fa-home change-cursor" onClick={()=>{this.props.updateDateContexts(moment())}}>Today</i> */}
+                          <button type="button" class="btn calender-today-button change-cursor" data-toggle="tooltip" data-placement="bottom" title="Go To Current date" onClick={()=>{this.props.updateDateContexts(moment())}}>TODAY</button>
                           </td>
                           <td colSpan="2">                        
                               <YearNav />
                           </td>
+
                           <td colSpan="2">                        
                               <ButtonMonthNavRight />
                           </td>

@@ -17,7 +17,7 @@ export default class ButtonMonthNavRight extends React.Component{
 
                 <div>
 
-                <i className="prev fa fa-fw fa-chevron-right change-cursor" onClick={(e)=> {this.nextMonth()}} >
+                <i className="prev fa fa-fw fa-chevron-right change-cursor" onClick={(e)=> {this.nextMonth()}} data-toggle="tooltip" data-placement="bottom" title="Go To Next Month">
                 </i>
                 </div>
                 )

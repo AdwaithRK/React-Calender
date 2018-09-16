@@ -16,7 +16,7 @@ export default class ButtonMonthNavLeft extends React.Component{
 
                 <div>
 
-                <i className="prev fa fa-fw fa-chevron-left month-nav-left-bar change-cursor" onClick={(e)=> {this.prevMonth()}} >
+                <i className="prev fa fa-fw fa-chevron-left month-nav-left-bar change-cursor" onClick={(e)=> {this.prevMonth()}} data-toggle="tooltip" data-placement="bottom" title="Go To Previous Month">
                 </i>
 
                 </div>

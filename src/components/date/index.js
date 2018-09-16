@@ -8,7 +8,7 @@ import {updateDateContext} from '../../actioncreator';
 import DayNavLeftprev from '../../containers/DayNavLeftPrev';
 import DayNavRightNext from '../../containers/DayNavRightNext';
 
-//Modal.setAppElement(document.getElementById('adwaith')); //for modal
+Modal.setAppElement(document.getElementById('root')); //for modal
 
 
 let modaldate="";
@@ -21,6 +21,7 @@ const customStyles = {
       bottom                : 'auto',
       marginRight           : '-50%',
       transform             : 'translate(-50%, -50%)',
+      padding               : '0',
      // backgroundColor       :  'rgba(52, 52, 52, 0.8)'
 
     }
@@ -28,8 +29,9 @@ const customStyles = {
 
 let localStorageItem = new Array();
 
-
-
+let editing_text;
+let editing_date;
+let delete_index_editing;
 
 
 
@@ -54,11 +56,13 @@ export default class Dates extends  React.Component {
 
         this.state = {
         modalIsOpen: false,
-        today: moment()
+        EditingModalIsOpen:false,
+        today: moment(),
+        EditCurrentTask:false,
         };
 
         this.openModal = this.openModal.bind(this);
-        this.afterOpenModal = this.afterOpenModal.bind(this);
+        //this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
 
@@ -88,12 +92,31 @@ export default class Dates extends  React.Component {
         this.setState({modalIsOpen: true});
     }
 
-    afterOpenModal() {
-        this.subtitle.style.color = '#f00';
+    openEditingModal=(event)=>{
+        event.stopPropagation();
+        //console.log("hello 2nd modal")
+        this.setState({EditingModalIsOpen:true});
+
+        editing_date=event.target.getAttribute('value');
+        delete_index_editing=event.target.getAttribute('index');
+        debugger;
+        editing_text=event.target.textContent;
+
+        debugger;
     }
+
+    // afterOpenModal() {
+    //     this.subtitle.style.color = '#f00';
+    // }
 
     closeModal() {
         this.setState({modalIsOpen: false});
+    }
+
+    closeEditingModal=()=>{
+        debugger;
+        this.setState({EditCurrentTask:false});
+        this.setState({EditingModalIsOpen:false});
     }
 
 
@@ -101,7 +124,8 @@ export default class Dates extends  React.Component {
 //for modal
 
     getTasks=(modaldate)=>{
-        let tasksRetrived=JSON.parse(localStorage.getItem(modaldate) );
+        debugger;
+        let tasksRetrived=JSON.parse(localStorage.getItem(modaldate));
         return tasksRetrived;
     }
 
@@ -160,22 +184,74 @@ export default class Dates extends  React.Component {
     }
 
 
-    onDayClick = (e, day) => {
-        
-
-        
+    onDayClick = ( day) => {      
         this.setState({
             selectedDay: day
         },this.openModal);
 
         //this.openModal();
+    }
+
+    prevMonthForModal = () => {
+        let dateContext = Object.assign({}, this.props.dateContext);
+        dateContext = moment(dateContext).subtract(1, "month");
+        this.props.updateDateContexts(dateContext);
+        let endOfMonth=moment(dateContext).endOf('month').format("D");
+        this.onDayClick(endOfMonth);
+    }
 
 
+    onModalPrevDate=()=>{
+        let startOfMonth=moment(this.props.dateContext).startOf('month').format("D");
+        debugger;
+        this.closeModal();
+        let d=this.state.selectedDay;
+        if(d==startOfMonth){
+            this.prevMonthForModal();
+            return;
+        }
+        debugger;
+        let dateContext = Object.assign({}, this.props.dateContext);
+        //let j=this.props.dateContext;
+        let c=moment(dateContext).set("date",d);
+        let f=moment(c).subtract(1,"day");
+        //this.props.updateDateContexts(c);
+        let a=f.format("D");
+        this.onDayClick(a);
+    }
+
+    nextMonthForModal = () => {
+        let dateContext = Object.assign({}, this.props.dateContext);
+        dateContext = moment(dateContext).add(1, "month");
+        this.props.updateDateContexts(dateContext);
+        let startOfMonth=moment(dateContext).startOf('month').format("D");
+        this.onDayClick(startOfMonth);
+
+    }
+
+    onModalNextDate=()=>{
+        let endOfMonth=moment(this.props.dateContext).endOf('month').format("D");
+        debugger;
+        this.closeModal();
+        let d=this.state.selectedDay;
+
+        if(d==endOfMonth){
+            this.nextMonthForModal();
+            return;
+        }
+        debugger;
+        let dateContext = Object.assign({}, this.props.dateContext);
+        //let j=this.props.dateContext;
+        let c=moment(dateContext).set("date",d);
+        let f=moment(c).add(1,"day");
+        //this.props.updateDateContexts(c);
+        let a=f.format("D");
+        this.onDayClick(a);
     }
 
 
 
-    deleteParticularTask(index){
+    deleteParticularTask=(index)=>{
 
 
         let tasklistfordeletion=JSON.parse(localStorage.getItem(modaldate) );
@@ -193,6 +269,30 @@ export default class Dates extends  React.Component {
     }
 
 
+    deleteParticularTaskEditingModal=(index)=>{
+
+
+        let tasklistfordeletion=JSON.parse(localStorage.getItem(editing_date) );
+        debugger;
+
+        tasklistfordeletion.splice(index,1);
+
+        debugger;
+        localStorage.setItem(editing_date,JSON.stringify(tasklistfordeletion) );
+
+        this.closeEditingModal();
+
+        //this.clearTaskState();
+        this.forceUpdate();
+        
+        debugger;
+
+    }
+
+
+
+
+
 
     makeList(udate){
 
@@ -205,14 +305,58 @@ export default class Dates extends  React.Component {
             if(index>1){return null;}
         return (
 
-            <li key={index} className="reminder-list">{tasks}</li>
+            <li key={index} className="reminder-list" onClick={(event)=>{this.openEditingModal(event)}} value={udate} index={index}>{tasks}</li>
         );
         })
+
+
 
         return taskListForFrontListing;
 
 
     }
+
+
+    EditCurrentTaskFn=()=>{
+        this.setState({
+            EditCurrentTask:true,
+        })
+
+    }
+
+    CloseEditCurrentTaskFn=()=>{
+        this.setState({
+            EditCurrentTask:false,
+        })
+
+        this.clearTaskState();
+
+    }
+
+
+    replaceEditedTask=()=>{
+
+        debugger;
+
+        let tasksi=JSON.parse(localStorage.getItem(editing_date) );
+
+        debugger;
+
+        tasksi[delete_index_editing]=this.state.task;
+
+        localStorage.setItem(editing_date,JSON.stringify(tasksi));
+
+        modaldate=editing_date;
+
+        editing_text=this.state.task;
+
+        this.CloseEditCurrentTaskFn();
+
+        //this.clearTaskState();
+
+    }
+
+
 
     // NextDay = (modaldate) => {
 
@@ -243,7 +387,7 @@ export default class Dates extends  React.Component {
                 );
             });
 
-
+          // this.onModalPrevDate();
 
 
                 let blanks = [];
@@ -263,7 +407,7 @@ export default class Dates extends  React.Component {
                     let textClass= (d == this.currentDay() ? "text-blue": "text");
                     if(this.props.dateContext.format("YYYY-MM-DD")!==moment().format("YYYY-MM-DD"))textClass="text";
                     daysInMonth.push(
-                        <td key={d} onClick={(e)=>this.onDayClick(e, d)} className="td-calender">
+                        <td key={d} onClick={(e)=>this.onDayClick(d)} className="td-calender" data-toggle="tooltip" data-placement="bottom" title="Click to add tasks">
                             <span className={textClass}>{d}</span>
                             {this.makeList(d+"/"+month+"/"+year)}
                         </td>
@@ -305,18 +449,67 @@ export default class Dates extends  React.Component {
                             transparent={true}
                         >
 
-                            <h2 className="modal-header" ref={subtitle => this.subtitle = subtitle}>{modaldate} <i onClick={this.clearAllTask} className="fa fa-trash modal-common-button"></i>  <i onClick={this.closeModal} className="fa fa-times modal-common-button"></i>  </h2>
+                            <h2 className="modal-header" ref={subtitle => this.subtitle = subtitle}> <DayNavLeftprev prevDate={this.onModalPrevDate}/> {modaldate} <i onClick={this.clearAllTask} className="fa fa-trash modal-common-button"></i> <DayNavRightNext NextDay={this.onModalNextDate}/> <i onClick={this.closeModal} className="fa fa-times modal-common-button"></i>  </h2>
+                            
+                            <div className="modal-body">
                             <ul>
                                 {tasklistk}
                             </ul>
-                            <div>Enter Tasks</div>
-                            <input type="text" className="modal-text-box" value={this.state.task} onChange={this.handleChange}/>
-                            <i className="fas fa-clock"></i>
+                            {/* <div>Enter Tasks</div> */}
+                            <input type="text" className="modal-text-box" placeholder="Enter Tasks" value={this.state.task} onChange={this.handleChange} autoFocus/>
+                            <i className="fas fa-clock time-glyfi-style"></i>
                             <input type="time" className="modal-text-box" defaultValue="" value={this.state.tasktime} onChange={this.onTimeChange} id="timeInput" />
-                            <i onClick={this.addTasks} className="fas fa-check modal-common-button"></i>
+
                             {/* <span className="tooltip"><i onClick={this.addTasks} className="fas fa-check modal-common-button"></i><span className="tooltiptext">Tooltip text</span></span> */}
+                          </div>
+
+                          <div className="modal-footer">
+                          <button type="button" class="btn btn-primary save-style"><i onClick={this.addTasks} className="fas fa-check modal-common-button">Save</i></button>
+                          </div>
+
                         </Modal>
                 );
+
+
+                trElems.push(                  
+                    <Modal
+                        isOpen={this.state.EditingModalIsOpen}
+                        style={customStyles}
+                        transparent={true}
+                    >
+                    <div className="modal-header Editing Editing-Modal-Upper"> 
+
+                    <div className="modal-header-buttons">
+
+                    <i onClick={this.deleteParticularTaskEditingModal} className="fa fa-trash modal-common-button editing-modal-trash"></i>
+                    <i onClick={this.closeEditingModal} className="fa fa-times close-editing-modal"></i>
+                   
+                    </div>
+
+
+                    {this.state.EditCurrentTask ? <input type="text" className="modal-text-box Editing-task-input" defaultValue={editing_text} onChange={this.handleChange} autoFocus/>: <span className="Editing-task">{editing_text} </span>}
+                    
+                    </div>
+
+                    <i className="fas fa-pencil-alt Pencil-Editing-Modal" onClick={this.EditCurrentTaskFn}></i>
+
+                    <div className="modal-footer Editing">
+                        <div className="Editing-Modal-Time-Section">
+                            <i className="far fa-clock Editing-Clock-Style"></i>
+                            <span className="Editing-Clock-Text">{editing_date}</span>
+                        </div>
+                    </div>
+
+            
+
+                    {this.state.EditCurrentTask ? <button type="button" class="btn btn-primary Editing-save-button" onClick={this.replaceEditedTask}>Save</button> : null}
+                    
+                  
+            
+                        
+                    </Modal>
+            
+                    );
 
                 return(trElems);
 
