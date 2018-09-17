@@ -54,7 +54,7 @@ export default class MonthNav extends React.Component{
         MonthNav = () => {
                 return (
                     <span className="label-month"
-                        onClick={(e)=> {this.onChangeMonth(e, this.month())}} data-toggle="tooltip" data-placement="bottom" title="Go To This Month">
+                        onClick={(e)=> {this.onChangeMonth(e, this.month())}} data-toggle="tooltip" data-placement="bottom" title="Click to change month">
                         {this.month()}
                         {this.state.showMonthPopup &&
                         <this.SelectList data={this.months} />

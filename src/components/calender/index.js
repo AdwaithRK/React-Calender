@@ -17,6 +17,9 @@ import googleCalender from '../../images/googleCalender.png';
 const imgstyles ={
     content:{
         width: '40px',
+        position: 'absolute',
+        bottom: '25px',
+        right: '50px',
 }
 
 }
@@ -72,7 +75,7 @@ export default class Calendar extends React.Component {
                              <img  src={googleCalender} style={imgstyles.content}/>
                           </td>
                           <td colSpan="3">
-                              <MonthNav data-toggle="tooltip" data-placement="bottom" title="Go To This Month"/>
+                              <MonthNav/>
                           </td>
                           <td>
                           {/* <i className="fas fa-home change-cursor" onClick={()=>{this.props.updateDateContexts(moment())}}>Today</i> */}
